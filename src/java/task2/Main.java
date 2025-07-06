@@ -46,7 +46,7 @@ public class Main {
             }
 
             if (userCommandConsole.equals(Command.EXIT.getName())) {
-                break;
+                System.exit(-1);
             }
 
             while (true) {
