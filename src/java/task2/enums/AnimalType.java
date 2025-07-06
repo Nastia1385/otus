@@ -15,4 +15,5 @@ public enum AnimalType {
     public String getName() {
         return name;
     }
+
 }

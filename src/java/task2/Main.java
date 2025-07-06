@@ -1,11 +1,9 @@
 package task2;
 
 import task2.animals.Animal;
-import task2.animals.birds.Duck;
-import task2.animals.pets.Cat;
-import task2.animals.pets.Dog;
 import task2.enums.AnimalType;
 import task2.enums.Command;
+import task2.factory.AnimalFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,11 +51,13 @@ public class Main {
 
                 if (userCommandConsole.equals(Command.ADD.getName())) {
                     System.out.println("Какое животное(cat/dog/duck):");
-                    String animal = scanner.next().trim().toLowerCase();
-                    if (!animalTypes.contains(animal)) {
+                    String userAnimal = scanner.next().trim().toLowerCase();
+                    if (!animalTypes.contains(userAnimal)) {
                         System.out.println("Неверно выбрано животное. Повторите попытку.");
                         continue;
                     }
+
+                    AnimalType animalType = AnimalType.valueOf(userAnimal.toUpperCase());
 
                     System.out.println("Введите кличку животного:");
                     String name = scanner.next();
@@ -101,23 +101,11 @@ public class Main {
                     System.out.println("Введите цвет животного:");
                     String color = scanner.next();
 
-                    if (animal.equals(AnimalType.CAT.getName())) {
-                        Cat cat = new Cat(name, age, weight, color);
-                        animals.add(cat);
-                        cat.say();
-                    }
+                    Animal animal = new AnimalFactory(name, age, weight, color).create(animalType);
 
-                    if (animal.equals(AnimalType.DOG.getName())) {
-                        Dog dog = new Dog(name, age, weight, color);
-                        animals.add(dog);
-                        dog.say();
-                    }
+                    animals.add(animal);
+                    animal.say();
 
-                    if (animal.equals(AnimalType.DUCK.getName())) {
-                        Duck duck = new Duck(name, age, weight, color);
-                        animals.add(duck);
-                        duck.say();
-                    }
                     break;
                 }
             }
