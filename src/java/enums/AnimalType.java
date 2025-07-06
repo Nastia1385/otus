@@ -1,4 +1,4 @@
-package task2.enums;
+package enums;
 
 public enum AnimalType {
 

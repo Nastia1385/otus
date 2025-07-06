@@ -1,6 +1,6 @@
-package task2.animals.pets;
+package animals.pets;
 
-import task2.animals.Animal;
+import animals.Animal;
 
 public class Cat extends Animal {
 

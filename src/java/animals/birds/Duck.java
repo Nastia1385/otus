@@ -1,6 +1,6 @@
-package task2.animals.birds;
+package animals.birds;
 
-import task2.animals.Animal;
+import animals.Animal;
 
 public class Duck extends Animal implements Flying {
 

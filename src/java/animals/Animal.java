@@ -1,4 +1,4 @@
-package task2.animals;
+package animals;
 
 public abstract class Animal {
 

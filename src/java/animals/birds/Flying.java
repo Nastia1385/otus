@@ -1,4 +1,4 @@
-package task2.animals.birds;
+package animals.birds;
 
 public interface Flying {
 

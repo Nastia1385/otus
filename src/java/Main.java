@@ -1,9 +1,7 @@
-package task2;
-
-import task2.animals.Animal;
-import task2.enums.AnimalType;
-import task2.enums.Command;
-import task2.factory.AnimalFactory;
+import animals.Animal;
+import enums.AnimalType;
+import enums.Command;
+import factory.AnimalFactory;
 
 import java.util.ArrayList;
 import java.util.List;

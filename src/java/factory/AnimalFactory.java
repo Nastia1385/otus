@@ -1,10 +1,10 @@
-package task2.factory;
+package factory;
 
-import task2.animals.Animal;
-import task2.animals.birds.Duck;
-import task2.animals.pets.Cat;
-import task2.animals.pets.Dog;
-import task2.enums.AnimalType;
+import animals.Animal;
+import animals.birds.Duck;
+import animals.pets.Cat;
+import animals.pets.Dog;
+import enums.AnimalType;
 
 public class AnimalFactory {
 
