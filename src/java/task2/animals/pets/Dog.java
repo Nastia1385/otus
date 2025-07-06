@@ -1,6 +1,8 @@
-package task2;
+package task2.animals.pets;
 
-public class Dog extends Animal{
+import task2.animals.Animal;
+
+public class Dog extends Animal {
 
     @Override
     public void say() {

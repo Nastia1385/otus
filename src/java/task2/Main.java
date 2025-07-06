@@ -1,5 +1,12 @@
 package task2;
 
+import task2.animals.Animal;
+import task2.animals.birds.Duck;
+import task2.animals.pets.Cat;
+import task2.animals.pets.Dog;
+import task2.enums.AnimalType;
+import task2.enums.Command;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
