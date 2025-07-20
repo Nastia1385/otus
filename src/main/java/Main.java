@@ -1,49 +1,117 @@
+import animals.Animal;
+import enums.AnimalType;
+import enums.Command;
+import factory.AnimalFactory;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.*;
-import java.util.Properties;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException, SQLException {
-        //Считать конфиг
-        Properties prop = new Properties();
-        InputStream stream = ClassLoader.getSystemResourceAsStream("SQLSettings.properties");
-        prop.load(stream);
 
-        String url = prop.getProperty("url");
-        String name = prop.getProperty("username");
-        String password = prop.getProperty("password");
+    public static void main(String[] args) throws SQLException, IOException {
 
-        String sqlQuery = "Select * from animal";
+        List<Animal> animals = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
 
+        List<String> commandNames = new ArrayList<>();
 
-        //Создадим подключение
-        try (Connection con = DriverManager.getConnection(url, name, password)) {
-            Statement statement = con.createStatement();
+        for (Command command : Command.values()) {
+            commandNames.add(command.name().toLowerCase());
+        }
 
-            //Выполним запрос
-            ResultSet result = statement.executeQuery(sqlQuery);
+        List<String> animalTypes = new ArrayList<>();
 
-            System.out.printf("%-3s %-15s %-20s %-15s %-4s %-5s%n" , "id", "color", "name", "type", "age", "weight");
-            System.out.println("---------------------------------------------------------------------");
+        for (AnimalType animalType : AnimalType.values()) {
+            animalTypes.add(animalType.getName());
+        }
 
-            //Выведем данные на экран
-            while (result.next()) {
+        while (true) {
+            System.out.printf("Введите команду(%s):%n", String.join("/", commandNames));
 
-                System.out.printf("%-3s %-15s %-20s %-15s %-4s %-5s%n",
-                        result.getInt("id"),
-                        result.getString("color"),
-                        result.getString("name"),
-                        result.getString("type"),
-                        result.getInt("age"),
-                        result.getInt("weight")
+            String userCommandConsole = scanner.next().trim().toLowerCase();
 
-                );
+            if (!commandNames.contains(userCommandConsole)) {
+                System.out.println("Ведена неверная команда.Повторите попытку.");
+                continue;
             }
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            if (userCommandConsole.equals(Command.LIST.getName())) {
+                AnimalService animalService = new AnimalService();
+                animalService.getAll();
+                continue;
+            }
+
+            if (userCommandConsole.equals(Command.EXIT.getName())) {
+                System.exit(-1);
+            }
+
+            while (true) {
+
+                if (userCommandConsole.equals(Command.ADD.getName())) {
+                    System.out.println("Какое животное(cat/dog/duck):");
+                    String userAnimal = scanner.next().trim().toLowerCase();
+                    if (!animalTypes.contains(userAnimal)) {
+                        System.out.println("Неверно выбрано животное. Повторите попытку.");
+                        continue;
+                    }
+
+                    AnimalType animalType = AnimalType.valueOf(userAnimal.toUpperCase());
+
+                    System.out.println("Введите кличку животного:");
+                    String name = scanner.next();
+
+                    int age;
+                    int weight;
+
+                    while (true) {
+
+                        System.out.println("Введите возраст животного:");
+                        String stringAge = scanner.next();
+
+                        try {
+                            age = Integer.parseInt(stringAge);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Введите цифру");
+                            continue;
+                        }
+
+                        if (age < 1) {
+                            System.out.println("Возраст не может быть меньше 1");
+                        } else break;
+                    }
+
+                    while (true) {
+                        System.out.println("Введите вес животного:");
+                        String stringWeight = scanner.next();
+
+                        try {
+                            weight = Integer.parseInt(stringWeight);
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("Введите цифру");
+                            continue;
+                        }
+                        if (weight < 1) {
+                            System.out.println("Вес не может быть меньше 1");
+                        } else break;
+                    }
+
+                    System.out.println("Введите цвет животного:");
+                    String color = scanner.next();
+
+                    Animal animal = new AnimalFactory(name, age, weight, color).create(animalType);
+                    AnimalService animalService = new AnimalService();
+                    animalService.save(animal, animalType);
+
+                    //animals.add(animal); //TODO сохранять в бд
+                    //animal.say();
+
+                    break;
+                }
+            }
         }
     }
 }
-
