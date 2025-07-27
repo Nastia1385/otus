@@ -104,7 +104,7 @@ public class AnimalService {
             animal.setId(++id);
             String sqlQuery = "INSERT into animal (id, type, name, age, weight, color)VALUES (?, ?, ?, ?, ?, ?)";
 
-            //Создадим подключение
+
             try (Connection con = DriverManager.getConnection(url, name, password)) {
                 PreparedStatement statement = con.prepareStatement(sqlQuery);
                 statement.setInt(1, animal.getId());
@@ -114,14 +114,14 @@ public class AnimalService {
                 statement.setInt(5, animal.getWeight());
                 statement.setString(6, animal.getColor());
 
-                //Выполним запрос
+
                 statement.executeUpdate();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         } else {
             String sqlQuery = "UPDATE animal set type = ?, name = ?, age = ?, weight = ?, color = ? WHERE id = ?";
-            //Создадим подключение
+
             try (Connection con = DriverManager.getConnection(url, name, password)) {
                 PreparedStatement statement = con.prepareStatement(sqlQuery);
                 statement.setString(1, type.getName());
@@ -131,7 +131,7 @@ public class AnimalService {
                 statement.setString(5, animal.getColor());
                 statement.setInt(6, animal.getId());
 
-                //Выполним запрос
+
                 statement.executeUpdate();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -153,11 +153,11 @@ public class AnimalService {
 
         String sqlQuery = "Select * from animal";
         int id = 1;
-        //Создадим подключение
+
         try (Connection con = DriverManager.getConnection(url, name, password)) {
             Statement statement = con.createStatement();
 
-            //Выполним запрос
+
             ResultSet result = statement.executeQuery(sqlQuery);
 
 

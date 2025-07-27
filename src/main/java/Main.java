@@ -37,7 +37,7 @@ public class Main {
             }
 
             if (userCommandConsole.equals(Command.LIST.getName())) {
-                System.out.println("Введите тип животного (cat/dog/duck) или Enter для вывода всего списка?");
+                System.out.println("Введите тип животного (cat/dog/duck) или 0 для вывода всего списка?");
                 String userType = scanner.next();
                 if (userType.equals("0")) {
                     AnimalService animalService = new AnimalService();
@@ -111,6 +111,7 @@ public class Main {
                     Animal animal = new AnimalFactory(name, age, weight, color).create(animalType);
                     AnimalService animalService = new AnimalService();
                     animalService.save(animal, animalType);
+                    System.out.println(animal);
 
                     break;
                 }
@@ -120,25 +121,55 @@ public class Main {
             while (true) {
 
                 if (userCommandConsole.equals(Command.UPDATE.getName())) {
-                 AnimalService animalService = new AnimalService();
-                 animalService.getAll();
+                    AnimalService animalService = new AnimalService();
+                    animalService.getAll();
 
                     System.out.println("Введите id записи для редактирования:");
                     int id = scanner.nextInt();
 
                     System.out.println("Введите тип животного (cat/dog/duck):");
-                    String userType = scanner.next();
-                    //TODO написать проверку на тип
+                    String userType = scanner.next().trim().toLowerCase();
+                    if (!animalTypes.contains(userType)) {
+                        System.out.println("Неверно выбрано животное. Повторите попытку.");
+                        continue;
+                    }
 
                     System.out.println("Введите имя животного:");
                     String name = scanner.next();
 
-                    System.out.println("Введите возраст животного:");
-                    int age = scanner.nextInt();
-                    //TODO написать проверку на числа
+                    int age;
+                    int weight;
 
-                    System.out.println("Введите вес животного:");
-                    int weight = scanner.nextInt();
+                    while (true) {
+                        System.out.println("Введите возраст животного:");
+                        String stringAge = scanner.next();
+
+                        try {
+                            age = Integer.parseInt(stringAge);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Введите цифру!");
+                            continue;
+                        }
+                        if (age < 1) {
+                            System.out.println("Возраст не может быть меньше 1");
+                        } else break;
+                    }
+
+                    while (true) {
+                        System.out.println("Введите вес животного:");
+                        String stringWeight = scanner.next();
+
+                        try {
+                            weight = Integer.parseInt(stringWeight);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Введите цифру!");
+                            continue;
+                        }
+
+                        if (weight < 1) {
+                            System.out.println("Вес не может быть меньше 1");
+                        } else break;
+                    }
 
                     System.out.println("Введите цвет животного:");
                     String color = scanner.next();
@@ -152,6 +183,7 @@ public class Main {
                     break;
 
                 }
+                break;
             }
         }
     }
