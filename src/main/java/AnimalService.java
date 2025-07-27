@@ -48,7 +48,7 @@ public class AnimalService {
         }
     }
 
-    public void getAllByType(AnimalType type) throws IOException {
+    public void getAllByType(String type) throws IOException {
         Properties prop = new Properties();
         InputStream stream = ClassLoader.getSystemResourceAsStream("SQLSettings.properties");
         prop.load(stream);
@@ -57,14 +57,15 @@ public class AnimalService {
         String name = prop.getProperty("username");
         String password = prop.getProperty("password");
 
-        String sqlQuery = String.format("SELECT * FROM animal WHERE type = %s", type.getName());
+        String sqlQuery = "SELECT * FROM animal WHERE type = ?";
 
         //Создадим подключение
         try (Connection con = DriverManager.getConnection(url, name, password)) {
-            Statement statement = con.createStatement();
+            PreparedStatement statement = con.prepareStatement(sqlQuery);
+            statement.setString(1, type);
 
             //Выполним запрос
-            ResultSet result = statement.executeQuery(sqlQuery);
+            ResultSet result = statement.executeQuery();
 
             System.out.printf("%-3s %-15s %-20s %-15s %-4s %-5s%n", "id", "type", "name", "color", "age", "weight");
             System.out.println("---------------------------------------------------------------------");

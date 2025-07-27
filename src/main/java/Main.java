@@ -37,8 +37,16 @@ public class Main {
             }
 
             if (userCommandConsole.equals(Command.LIST.getName())) {
-                AnimalService animalService = new AnimalService();
-                animalService.getAll();
+                System.out.println("Введите тип животного (cat/dog/duck) или Enter для вывода всего списка?");
+                String userType = scanner.next();
+                if (userType.equals("0")) {
+                    AnimalService animalService = new AnimalService();
+                    animalService.getAll();
+                } else {
+                    AnimalService animalService = new AnimalService();
+                    animalService.getAllByType(userType);
+
+                }
                 continue;
             }
 
