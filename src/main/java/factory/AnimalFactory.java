@@ -37,4 +37,4 @@ public class AnimalFactory {
         }
         throw new RuntimeException(String.format("Animal %s not supported", animalType.getName()));
     }
-       }
+}

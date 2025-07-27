@@ -2,6 +2,8 @@ package animals;
 
 public abstract class Animal {
 
+    private int id;
+
     private String name;
 
     private int age;
@@ -15,6 +17,14 @@ public abstract class Animal {
         this.age = age;
         this.weight = weight;
         this.color = color;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
