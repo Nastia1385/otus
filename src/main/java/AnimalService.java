@@ -98,32 +98,46 @@ public class AnimalService {
         String name = prop.getProperty("username");
         String password = prop.getProperty("password");
 
+        if (animal.getId() == 0) {
+            int id = maxId();
+            animal.setId(++id);
+            String sqlQuery = "INSERT into animal (id, type, name, age, weight, color)VALUES (?, ?, ?, ?, ?, ?)";
 
-        String sqlQuery = animal.getId() == 0
-                ? "INSERT into animal (id, type, name, age, weight, color)VALUES (?, ?, ?, ?, ?, ?)"
-                : String.format("UPDATE animal set type = ?, name = ?, age = ?, weight = ?, color = ? WHERE id = %d", animal.getId());
+            //Создадим подключение
+            try (Connection con = DriverManager.getConnection(url, name, password)) {
+                PreparedStatement statement = con.prepareStatement(sqlQuery);
+                statement.setInt(1, animal.getId());
+                statement.setString(2, type.getName());
+                statement.setString(3, animal.getName());
+                statement.setInt(4, animal.getAge());
+                statement.setInt(5, animal.getWeight());
+                statement.setString(6, animal.getColor());
 
-        int id = maxId();
-        animal.setId(++id);
+                //Выполним запрос
+                statement.executeUpdate();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        } else {
+            String sqlQuery = "UPDATE animal set type = ?, name = ?, age = ?, weight = ?, color = ? WHERE id = ?";
+            //Создадим подключение
+            try (Connection con = DriverManager.getConnection(url, name, password)) {
+                PreparedStatement statement = con.prepareStatement(sqlQuery);
+                statement.setString(1, type.getName());
+                statement.setString(2, animal.getName());
+                statement.setInt(3, animal.getAge());
+                statement.setInt(4, animal.getWeight());
+                statement.setString(5, animal.getColor());
+                statement.setInt(6, animal.getId());
 
-        //Создадим подключение
-        try (Connection con = DriverManager.getConnection(url, name, password)) {
-            PreparedStatement statement = con.prepareStatement(sqlQuery);
-            statement.setInt(1, animal.getId());
-            statement.setString(2, type.getName());
-            statement.setString(3, animal.getName());
-            statement.setInt(4, animal.getAge());
-            statement.setInt(5, animal.getWeight());
-            statement.setString(6, animal.getColor());
-
-            //Выполним запрос
-            statement.execute();
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+                //Выполним запрос
+                statement.executeUpdate();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
-    }
 
-    public void update(Animal animal, AnimalType type) {
+
 
     }
 

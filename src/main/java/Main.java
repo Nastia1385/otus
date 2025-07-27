@@ -4,16 +4,14 @@ import enums.Command;
 import factory.AnimalFactory;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws IOException {
 
-        List<Animal> animals = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
         List<String> commandNames = new ArrayList<>();
@@ -106,10 +104,45 @@ public class Main {
                     AnimalService animalService = new AnimalService();
                     animalService.save(animal, animalType);
 
-                    //animals.add(animal); //TODO сохранять в бд
-                    //animal.say();
+                    break;
+                }
+                break;
+            }
+
+            while (true) {
+
+                if (userCommandConsole.equals(Command.UPDATE.getName())) {
+                 AnimalService animalService = new AnimalService();
+                 animalService.getAll();
+
+                    System.out.println("Введите id записи для редактирования:");
+                    int id = scanner.nextInt();
+
+                    System.out.println("Введите тип животного (cat/dog/duck):");
+                    String userType = scanner.next();
+                    //TODO написать проверку на тип
+
+                    System.out.println("Введите имя животного:");
+                    String name = scanner.next();
+
+                    System.out.println("Введите возраст животного:");
+                    int age = scanner.nextInt();
+                    //TODO написать проверку на числа
+
+                    System.out.println("Введите вес животного:");
+                    int weight = scanner.nextInt();
+
+                    System.out.println("Введите цвет животного:");
+                    String color = scanner.next();
+
+
+                    AnimalType animalType = AnimalType.valueOf(userType.toUpperCase());
+                    Animal animal = new AnimalFactory(name, age, weight, color).create(animalType);
+                    animal.setId(id);
+                    animalService.save(animal, animalType);
 
                     break;
+
                 }
             }
         }
